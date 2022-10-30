@@ -1,13 +1,28 @@
-services:
-- type: web
-  name: app-backend
-  env: go
-  rootDir: backend
-  buildCommand: go build -o app .
-  startCommand: ./app
-- type: web
-  name: app-community
-  env: docker
-  rootDir: community/docker
-  dockerfilePath: ./Dockerfile
-  dockerContext: .
+
+
+
+app = "december-2015-fleet"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+
+[env]
+ALLY_CODES_URL="http://rotbot.eu/sniper/ac-<random-number>-fleet.json"
+ARENA_TYPE="FLEET"
+DISCORD_WEB_HOOK="https://discord.com/api/webhooks/<webhook>"
+
+
+[experimental]
+allowed_public_ports = []
+auto_rollback = true
+
+
+[[services]]
+http_checks = []
+processes = ["app"]
+script_checks = []
+[services.concurrency]
+hard_limit = 25
+soft_limit = 20
+type = "connections"
